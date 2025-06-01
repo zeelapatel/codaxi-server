@@ -1,21 +1,46 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import sequelize from './config/database';
+import { initProject } from './models/project'; // Import the init function
+import { Project } from './models/project';
 
-dotenv.config(); // Load environment variables from .env file
+import projectRoutes from './routes/projectRoutes';
+
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware to parse JSON bodies
 app.use(express.json());
 
-// Basic /health endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'Backend is healthy!' });
 });
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Access health check at http://localhost:${PORT}/health`);
-}); 
+app.use('/api/projects', projectRoutes);
+
+const startServer = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Database connection has been established successfully.');
+    
+    // Initialize models AFTER successful database connection
+    initProject(sequelize);
+    console.log('Models initialized successfully.');
+    
+    // Sync database models
+    await sequelize.sync();
+    console.log('Database models synchronized successfully.');
+
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+      console.log(`Access health check at http://localhost:${PORT}/health`);
+      console.log(`Project API available at http://localhost:${PORT}/api/projects`);
+    });
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+    process.exit(1);
+  }
+};
+
+startServer();

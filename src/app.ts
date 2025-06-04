@@ -5,6 +5,7 @@ import { initProject } from './models/project'; // Import the init function
 import { Project } from './models/project';
 
 import projectRoutes from './routes/projectRoutes';
+import ingestionRoutes from './routes/ingestionRoutes';
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.get('/health', (req, res) => {
 });
 
 app.use('/api/projects', projectRoutes);
+app.use('/api/ingest-codebase', ingestionRoutes);
 
 const startServer = async () => {
   try {
@@ -36,6 +38,7 @@ const startServer = async () => {
       console.log(`Server running on port ${PORT}`);
       console.log(`Access health check at http://localhost:${PORT}/health`);
       console.log(`Project API available at http://localhost:${PORT}/api/projects`);
+      console.log(`Codebase ingestion API available at http://localhost:${PORT}/api/ingest-codebase`);
     });
   } catch (error) {
     console.error('Unable to connect to the database:', error);

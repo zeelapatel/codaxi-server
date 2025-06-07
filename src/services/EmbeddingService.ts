@@ -27,6 +27,10 @@ class EmbeddingService {
     }
   }
 
+  public async embed(text: string): Promise<number[]> {
+    return this.generateEmbedding(text);
+  }
+
   public async embedAndStoreCode(filePath: string, projectId: string): Promise<void> {
     const collection = await getOrCreateCollection(this.collectionName);
     const analysis = await CodeAnalysisService.analyzeFile(filePath);

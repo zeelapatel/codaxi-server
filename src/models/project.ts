@@ -7,11 +7,21 @@ interface ProjectContext {
   highLevelSummary?: string;
 }
 
+interface ApiDocumentation {
+  type: 'function' | 'route';
+  filePath: string;
+  name?: string;
+  method?: string;
+  path?: string;
+  documentation: string;
+}
+
 class Project extends Model {
   public id!: string;
   public name!: string;
   public description!: string | null;
   public projectContext!: ProjectContext | null;
+  public generatedApiDocs!: ApiDocumentation[] | null;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -34,6 +44,10 @@ const initProject = (sequelize: Sequelize) => {
         allowNull: true,
       },
       projectContext: {
+        type: DataTypes.JSONB,
+        allowNull: true,
+      },
+      generatedApiDocs: {
         type: DataTypes.JSONB,
         allowNull: true,
       },

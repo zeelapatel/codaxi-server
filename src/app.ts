@@ -9,6 +9,7 @@ import ingestionRoutes from './routes/ingestionRoutes';
 import analysisRoutes from './routes/analysisRoutes';
 import embeddingRoutes from './routes/embeddingRoutes';
 import projectAnalysisRoutes from './routes/projectAnalysisRoutes';
+import projectDocRoutes from './routes/projectDocRoutes';
 import { getOrCreateCollection } from './config/chromadb';
 
 dotenv.config();
@@ -27,6 +28,7 @@ app.use('/api/ingest-codebase', ingestionRoutes);
 app.use('/api/analyze-code', analysisRoutes);
 app.use('/api/embed-code', embeddingRoutes);
 app.use('/api/projects', projectAnalysisRoutes);
+app.use('/api/projects', projectDocRoutes);
 
 const startServer = async () => {
   try {
@@ -52,7 +54,9 @@ const startServer = async () => {
       console.log(`Codebase ingestion API available at http://localhost:${PORT}/api/ingest-codebase`);
       console.log(`Code analysis API available at http://localhost:${PORT}/api/analyze-code`);
       console.log(`Code embedding API available at http://localhost:${PORT}/api/embed-code`);
-      console.log(`Project analysis API available at http://localhost:${PORT}/api/projects/:projectId/analyze-full-project`);
+      console.log(`Full Project Analysis API available at http://localhost:${PORT}/api/projects/:projectId/analyze-full-project`);
+      console.log(`API Documentation Generation available at http://localhost:${PORT}/api/projects/:projectId/generate-api-docs`);
+      console.log(`API Documentation Retrieval available at http://localhost:${PORT}/api/projects/:projectId/api-docs`);
     });
   } catch (error) {
     console.error('Unable to connect to databases or start server:', error);

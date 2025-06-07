@@ -8,6 +8,7 @@ import projectRoutes from './routes/projectRoutes';
 import ingestionRoutes from './routes/ingestionRoutes';
 import analysisRoutes from './routes/analysisRoutes';
 import embeddingRoutes from './routes/embeddingRoutes';
+import projectAnalysisRoutes from './routes/projectAnalysisRoutes';
 import { getOrCreateCollection } from './config/chromadb';
 
 dotenv.config();
@@ -25,6 +26,7 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/ingest-codebase', ingestionRoutes);
 app.use('/api/analyze-code', analysisRoutes);
 app.use('/api/embed-code', embeddingRoutes);
+app.use('/api/projects', projectAnalysisRoutes);
 
 const startServer = async () => {
   try {
@@ -50,6 +52,7 @@ const startServer = async () => {
       console.log(`Codebase ingestion API available at http://localhost:${PORT}/api/ingest-codebase`);
       console.log(`Code analysis API available at http://localhost:${PORT}/api/analyze-code`);
       console.log(`Code embedding API available at http://localhost:${PORT}/api/embed-code`);
+      console.log(`Project analysis API available at http://localhost:${PORT}/api/projects/:projectId/analyze-full-project`);
     });
   } catch (error) {
     console.error('Unable to connect to databases or start server:', error);

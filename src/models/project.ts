@@ -1,9 +1,17 @@
 import { Sequelize, DataTypes, Model } from 'sequelize';
 
+interface ProjectContext {
+  fileList: string[];
+  directoryTree: string;
+  dependencyGraph: any;
+  highLevelSummary?: string;
+}
+
 class Project extends Model {
   public id!: string;
   public name!: string;
   public description!: string | null;
+  public projectContext!: ProjectContext | null;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -23,6 +31,10 @@ const initProject = (sequelize: Sequelize) => {
       },
       description: {
         type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      projectContext: {
+        type: DataTypes.JSONB,
         allowNull: true,
       },
       createdAt: {
